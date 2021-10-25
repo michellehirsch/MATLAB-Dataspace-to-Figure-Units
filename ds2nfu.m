@@ -84,6 +84,17 @@ axun = get(hAx,'Units');
 set(hAx,'Units','normalized');
 axpos = get(hAx,'Position');
 axlim = axis(hAx);
+
+% Handle log scale axes
+if strcmp(hAx.XScale,"log")
+    axlim(1:2) = log10(axlim(1:2));
+    x = log10(x);
+end
+if strcmp(hAx.YScale,"log")
+    axlim(3:4) = log10(axlim(3:4));
+    y = log10(y);
+end
+
 axwidth = diff(axlim(1:2));
 axheight = diff(axlim(3:4));
 
