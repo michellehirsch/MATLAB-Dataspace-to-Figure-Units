@@ -52,7 +52,7 @@ function varargout = ds2nfu(varargin)
 % Copyright 2006-2014 The MathWorks, Inc
 
 %% Process inputs
-error(nargchk(1, 3, nargin))
+narginchk(1,3)
 
 % Determine if axes handle is specified
 if length(varargin{1})== 1 && ishandle(varargin{1}) && strcmp(get(varargin{1},'type'),'axes')	
@@ -68,9 +68,9 @@ errmsg = ['Invalid input.  Coordinates must be specified as 1 four-element \n' .
 % Proceed with remaining inputs
 if length(varargin)==1	% Must be 4 elt POS vector
 	pos = varargin{1};
-	if length(pos) ~=4, 
+	if length(pos) ~=4
 		error(errmsg);
-	end;
+    end
 else
 	[x,y] = deal(varargin{:});
 	if length(x) ~= length(y)
@@ -82,22 +82,24 @@ end
 %% Get limits
 axun = get(hAx,'Units');
 set(hAx,'Units','normalized');
-axpos = get(hAx,'Position');
+axpos = get(hAx,'Position'); 
+% When DataAspectRatioMode and PlotBoxAspectRatioMode are both manual,
+% Position likely won't accurately reflect actual position of visible axis
+
 axlim = axis(hAx);
 
-% Handle log scale axes
 if strcmp(hAx.XScale,"log")
-    axlim(1:2) = log10(axlim(1:2));
-    x = log10(x);
+    axlim(1:2) = log10(axlim(1:2)); 
+	x = log10(x);
 end
 if strcmp(hAx.YScale,"log")
-    axlim(3:4) = log10(axlim(3:4));
-    y = log10(y);
+    axlim(3:4) = log10(axlim(3:4)); 
+	y = log10(y);
 end
+
 
 axwidth = diff(axlim(1:2));
 axheight = diff(axlim(3:4));
-
 
 %% Transform data
 if exist('x','var')
