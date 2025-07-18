@@ -82,7 +82,12 @@ end
 %% Get limits
 axun = get(hAx,'Units');
 set(hAx,'Units','normalized');
-axpos = get(hAx,'Position'); 
+if hAx.DataAspectRatioMode == "manual"
+% Do something. 
+else
+    axpos = get(hAx,'Position');
+end
+
 % When DataAspectRatioMode and PlotBoxAspectRatioMode are both manual,
 % Position likely won't accurately reflect actual position of visible axis
 
